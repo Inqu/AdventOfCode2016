@@ -10,8 +10,10 @@ namespace AdventOfCode2016
     {
         static void Main(string[] args)
         {
-            List<AdventOfCodeChallenge> challengesToRun = new List<AdventOfCodeChallenge>() { new First(), new BaseToCopy() };
-
+            // List of challenges to run
+            List<AdventOfCodeChallenge> challengesToRun = new List<AdventOfCodeChallenge>() { new First() };
+            
+            // Some simple console UI
             Console.Out.WriteLine("---------------------------------------------------");
             foreach (var challenge in challengesToRun)
             {
@@ -51,6 +53,10 @@ namespace AdventOfCode2016
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Switches between green (if completed) red (if not)
+        /// </summary>
+        /// <param name="b"></param>
         private static void GreenRedSwitch(bool b)
         {
             Console.BackgroundColor = ConsoleColor.DarkRed;

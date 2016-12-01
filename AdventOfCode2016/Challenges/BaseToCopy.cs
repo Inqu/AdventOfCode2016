@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2016
 {
+    /// <summary>
+    /// This class is mostly for copying for a new AdventOfCode day
+    /// </summary>
     public class BaseToCopy : AdventOfCodeChallenge
     {
         public BaseToCopy() : base (2) { }

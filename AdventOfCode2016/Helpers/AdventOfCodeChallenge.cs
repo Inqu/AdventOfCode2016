@@ -7,6 +7,9 @@ using System.Net;
 
 namespace AdventOfCode2016
 {
+    /// <summary>
+    /// Abstract class for a new challenge.
+    /// </summary>
     public abstract class AdventOfCodeChallenge
     {
         public int Day { get; set; }
