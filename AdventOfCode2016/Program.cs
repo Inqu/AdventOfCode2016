@@ -10,10 +10,10 @@ namespace AdventOfCode2016
     {
         static void Main(string[] args)
         {
-            List<AdventOfCodeChallenge> challenges = new List<AdventOfCodeChallenge>() { new First(), new BaseToCopy() };
+            List<AdventOfCodeChallenge> challengesToRun = new List<AdventOfCodeChallenge>() { new First(), new BaseToCopy() };
 
             Console.Out.WriteLine("---------------------------------------------------");
-            foreach (var challenge in challenges)
+            foreach (var challenge in challengesToRun)
             {
                 Console.Out.WriteLine("\t Challenge day {0}", challenge.Day);
                 Console.Out.Write("\t\t Answer one is: ");
