@@ -6,40 +6,83 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2016
 {
-    /// <summary>
-    /// This class is mostly for copying for a new AdventOfCode day
-    /// </summary>
     public class Second : AdventOfCodeChallenge
     {
-        public Second() : base(2, true)
+        private const char LEFT = 'L';
+        private const char RIGHT = 'R';
+        private const char UP = 'U';
+        private const char DOWN = 'D';
+
+        private const char BLANK = ' ';
+
+        public Second() : base(2, true, true)
         {
-            Input = "LURLLLLLDUULRDDDRLRDDDUDDUULLRLULRURLRRDULUUURDUURLRDRRURUURUDDRDLRRLDDDDLLDURLDUUUDRDDDLULLDDLRLRRRLDLDDDDDLUUUDLUULRDUDLDRRRUDUDDRULURULDRUDLDUUUDLUDURUURRUUDRLDURRULURRURUUDDLRLDDDDRDRLDDLURLRDDLUDRLLRURRURRRURURRLLRLDRDLULLUDLUDRURDLRDUUDDUUDRLUDDLRLUDLLURDRUDDLRURDULLLUDDURULDRLUDLUDLULRRUUDDLDRLLUULDDURLURRRRUUDRUDLLDRUDLRRDUDUUURRULLDLDDRLUURLDUDDRLDRLDULDDURDLUUDRRLDRLLLRRRDLLLLURDLLLUDRUULUULLRLRDLULRLURLURRRDRLLDLDRLLRLULRDDDLUDDLLLRRLLLUURLDRULLDURDLULUDLRLDLUDURLLLURUUUDRRRULRDURLLURRLDLRLDLDRRUUDRDDDDDRDUUDULUL,RRURLURRULLUDUULUUURURULLDLRLRRULRUDUDDLLLRRRRLRUDUUUUDULUDRULDDUDLURLRRLLDLURLRDLDUULRDLLLDLLULLURLLURURULUDLDUDLUULDDLDRLRRUURRRLLRRLRULRRLDLDLRDULDLLDRRULRDRDUDUUUDUUDDRUUUDDLRDULLULDULUUUDDUULRLDLRLUUUUURDLULDLUUUULLLLRRRLDLLDLUDDULRULLRDURDRDRRRDDDLRDDULDLURLDLUDRRLDDDLULLRULDRULRURDURRUDUUULDRLRRUDDLULDLUULULRDRDULLLDULULDUDLDRLLLRLRURUDLUDDDURDUDDDULDRLUDRDRDRLRDDDDRLDRULLURUDRLLUDRLDDDLRLRDLDDUULRUDRLUULRULRLDLRLLULLUDULRLDRURDD,UUUUUURRDLLRUDUDURLRDDDURRRRULRLRUURLLLUULRUDLLRUUDURURUDRDLDLDRDUDUDRLUUDUUUDDURRRDRUDDUURDLRDRLDRRULULLLUDRDLLUULURULRULDRDRRLURULLDURUURDDRDLLDDDDULDULUULLRULRLDURLDDLULRLRRRLLURRLDLLULLDULRULLDLRULDDLUDDDLDDURUUUURDLLRURDURDUUDRULDUULLUUULLULLURLRDRLLRULLLLRRRRULDRULLUURLDRLRRDLDDRLRDURDRRDDDRRUDRLUULLLULRDDLDRRLRUDLRRLDULULRRDDURULLRULDUDRLRUUUULURLRLRDDDUUDDULLULLDDUDRLRDDRDRLDUURLRUULUULDUDDURDDLLLURUULLRDLRRDRDDDUDDRDLRRDDUURDUULUDDDDUUDDLULLDRDDLULLUDLDDURRULDUDRRUURRDLRLLDDRRLUUUDDUUDUDDDDDDDLULURRUULURLLUURUDUDDULURDDLRDDRRULLLDRRDLURURLRRRDDLDUUDR,URLLRULULULULDUULDLLRDUDDRRLRLLLULUDDUDLLLRURLLLLURRLRRDLULRUDDRLRRLLRDLRRULDLULRRRRUUDDRURLRUUDLRRULDDDLRULDURLDURLRLDDULURDDDDULDRLLUDRULRDDLUUUDUDUDDRRUDUURUURLUUULRLULUURURRLRUUULDDLURULRRRRDULUDLDRLLUURRRLLURDLDLLDUDRDRLLUDLDDLRLDLRUDUULDRRLLULDRRULLULURRLDLUUDLUDDRLURDDUDRDUDDDULLDRUDLRDLRDURUULRRDRUUULRUURDURLDUDRDLLRUULUULRDDUDLRDUUUUULDDDDDRRULRURLLRLLUUDLUDDUULDRULDLDUURUDUDLRULULUULLLLRLULUDDDRRLLDRUUDRLDDDRDDURRDDDULURDLDLUDDUULUUURDULDLLULRRUURDDUDRUULDLRLURUDLRDLLLDRLDUURUDUDRLLLDDDULLUDUUULLUUUDLRRRURRRRRDUULLUURRDUU,UDULUUDLDURRUDDUDRDDRRUULRRULULURRDDRUULDRLDUDDRRRRDLRURLLLRLRRLLLULDURRDLLDUDDULDLURLURUURLLLDUURRUUDLLLUDRUDLDDRLRRDLRLDDDULLRUURUUUDRRDLLLRRULDRURLRDLLUDRLLULRDLDDLLRRUDURULRLRLDRUDDLUUDRLDDRUDULLLURLRDLRUUDRRUUDUDRDDRDRDDLRULULURLRULDRURLURLRDRDUUDUDUULDDRLUUURULRDUDRUDRULUDDULLRDDRRUULRLDDLUUUUDUDLLLDULRRLRDDDLULRDUDRLDLURRUUDULUDRURUDDLUUUDDRLRLRLURDLDDRLRURRLLLRDRLRUUDRRRLUDLDLDDDLDULDRLURDURULURUDDDUDUULRLLDRLDDDDRULRDRLUUURD";
+            // Have inserted ,'s where there was newlines
+            Input = "LURLLLLLDUULRDDDRLRDDDUDDUULLRLULRURLRRDULUUURDUURLRDRRURUURUDDRDLRRLDDDDLLDURLDUUUDRDDDLULLDDLRLRRRLDLDDDDDLUUUD" +
+                "LUULRDUDLDRRRUDUDDRULURULDRUDLDUUUDLUDURUURRUUDRLDURRULURRURUUDDLRLDDDDRDRLDDLURLRDDLUDRLLRURRURRRURURRLLRLDRDLULLUDL" +
+                "UDRURDLRDUUDDUUDRLUDDLRLUDLLURDRUDDLRURDULLLUDDURULDRLUDLUDLULRRUUDDLDRLLUULDDURLURRRRUUDRUDLLDRUDLRRDUDUUURRULLDLDDR" +
+                "LUURLDUDDRLDRLDULDDURDLUUDRRLDRLLLRRRDLLLLURDLLLUDRUULUULLRLRDLULRLURLURRRDRLLDLDRLLRLULRDDDLUDDLLLRRLLLUURLDRULLDURD" +
+                "LULUDLRLDLUDURLLLURUUUDRRRULRDURLLURRLDLRLDLDRRUUDRDDDDDRDUUDULUL,RRURLURRULLUDUULUUURURULLDLRLRRULRUDUDDLLLRRRRLRUDUU" +
+                "UUDULUDRULDDUDLURLRRLLDLURLRDLDUULRDLLLDLLULLURLLURURULUDLDUDLUULDDLDRLRRUURRRLLRRLRULRRLDLDLRDULDLLDRRULRDRDUDUUUDUUD" +
+                "DRUUUDDLRDULLULDULUUUDDUULRLDLRLUUUUURDLULDLUUUULLLLRRRLDLLDLUDDULRULLRDURDRDRRRDDDLRDDULDLURLDLUDRRLDDDLULLRULDRULRUR" +
+                "DURRUDUUULDRLRRUDDLULDLUULULRDRDULLLDULULDUDLDRLLLRLRURUDLUDDDURDUDDDULDRLUDRDRDRLRDDDDRLDRULLURUDRLLUDRLDDDLRLRDLDDUUL" +
+                "RUDRLUULRULRLDLRLLULLUDULRLDRURDD,UUUUUURRDLLRUDUDURLRDDDURRRRULRLRUURLLLUULRUDLLRUUDURURUDRDLDLDRDUDUDRLUUDUUUDDURRRDR" +
+                "UDDUURDLRDRLDRRULULLLUDRDLLUULURULRULDRDRRLURULLDURUURDDRDLLDDDDULDULUULLRULRLDURLDDLULRLRRRLLURRLDLLULLDULRULLDLRULDDL" +
+                "UDDDLDDURUUUURDLLRURDURDUUDRULDUULLUUULLULLURLRDRLLRULLLLRRRRULDRULLUURLDRLRRDLDDRLRDURDRRDDDRRUDRLUULLLULRDDLDRRLRUDLR" +
+                "RLDULULRRDDURULLRULDUDRLRUUUULURLRLRDDDUUDDULLULLDDUDRLRDDRDRLDUURLRUULUULDUDDURDDLLLURUULLRDLRRDRDDDUDDRDLRRDDUURDUULU" +
+                "DDDDUUDDLULLDRDDLULLUDLDDURRULDUDRRUURRDLRLLDDRRLUUUDDUUDUDDDDDDDLULURRUULURLLUURUDUDDULURDDLRDDRRULLLDRRDLURURLRRRDDLD" +
+                "UUDR,URLLRULULULULDUULDLLRDUDDRRLRLLLULUDDUDLLLRURLLLLURRLRRDLULRUDDRLRRLLRDLRRULDLULRRRRUUDDRURLRUUDLRRULDDDLRULDURLDU" +
+                "RLRLDDULURDDDDULDRLLUDRULRDDLUUUDUDUDDRRUDUURUURLUUULRLULUURURRLRUUULDDLURULRRRRDULUDLDRLLUURRRLLURDLDLLDUDRDRLLUDLDDLR" +
+                "LDLRUDUULDRRLLULDRRULLULURRLDLUUDLUDDRLURDDUDRDUDDDULLDRUDLRDLRDURUULRRDRUUULRUURDURLDUDRDLLRUULUULRDDUDLRDUUUUULDDDDDR" +
+                "RULRURLLRLLUUDLUDDUULDRULDLDUURUDUDLRULULUULLLLRLULUDDDRRLLDRUUDRLDDDRDDURRDDDULURDLDLUDDUULUUURDULDLLULRRUURDDUDRUULDL" +
+                "RLURUDLRDLLLDRLDUURUDUDRLLLDDDULLUDUUULLUUUDLRRRURRRRRDUULLUURRDUU,UDULUUDLDURRUDDUDRDDRRUULRRULULURRDDRUULDRLDUDDRRRRDL" +
+                "RURLLLRLRRLLLULDURRDLLDUDDULDLURLURUURLLLDUURRUUDLLLUDRUDLDDRLRRDLRLDDDULLRUURUUUDRRDLLLRRULDRURLRDLLUDRLLULRDLDDLLRRUD" +
+                "URULRLRLDRUDDLUUDRLDDRUDULLLURLRDLRUUDRRUUDUDRDDRDRDDLRULULURLRULDRURLURLRDRDUUDUDUULDDRLUUURULRDUDRUDRULUDDULLRDDRRUUL" +
+                "RLDDLUUUUDUDLLLDULRRLRDDDLULRDUDRLDLURRUUDULUDRURUDDLUUUDDRLRLRLURDLDDRLRURRLLLRDRLRUUDRRRLUDLDLDDDLDULDRLURDURULURUDDD" +
+                "UDUULRLLDRLDDDDRULRDRLUUURD";
         }
 
         public override string FirstPuzzle()
         {
-            string keyCode = String.Empty; // contains the code
-            int[,] keypad = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}; // our keypad
-            string[] instructions = Input.Split(',');
+            //  The keypad       
+            //  | 1 | 2 | 3 |   |0,0|0,1|0,2| 
+            //  | 4 | 5 | 6 |   |1,0|1,1|1,2|
+            //  | 7 | 8 | 9 |   |2,0|2,1|2,2|
+            //
+            // To go horizontal we need to increase the second value in the 2d array
+            // Increase go right, decrease goes left
+            // To go vertical we need to increase the first valeu in the 2d array
+            // Increase goes down, decrease goes up
+            int[,] keypad = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+            string keyCode = String.Empty; // Will hold the code to use
+            string[] instructions = Input.Split(','); // Splitting up instructions
 
-            int x = 1;
-            int y = 1;
+            // Starting position number 5
+            int upDown = 1;
+            int leftRight = 1;
 
-            foreach (var instruction in instructions)
+            // Run through the instructions for each number to the door
+            foreach (var instructionLine in instructions)
             {
-                foreach (var i in instruction)
+                // We find out where we need to go on the keypad
+                // We also need to stay inbound if we are max to
+                // the right we can't go further.
+                foreach (var instruction in instructionLine)
                 {
-                    if (i == 'L' && y > 0)
-                        y--;
-                    else if (i == 'R' && y < 2)
-                        y++;
-                    else if (i == 'U' && x > 0)
-                        x--;
-                    else if (i == 'D' && x < 2)
-                        x++;
+                    if (instruction == RIGHT && leftRight < 2)
+                        leftRight++;
+
+                    else if (instruction == LEFT && leftRight > 0)
+                        leftRight--;
+
+                    else if (instruction == UP && upDown > 0)
+                        upDown--;
+
+                    else if (instruction == DOWN && upDown < 2)
+                        upDown++;
                 }
 
-                keyCode += keypad[x, y];
+                keyCode += keypad[upDown, leftRight];
             }
 
             return keyCode;
@@ -47,7 +90,58 @@ namespace AdventOfCode2016
 
         public override string SecondPuzzle()
         {
-            throw new NotImplementedException();
+            // The changed key pad
+            // |   |   | 1 |   |   |   |0,0|0,1|0,2|0,3|0,4|
+            // |   | 2 | 3 | 4 |   |   |1,0|1,1|1,2|1,3|1,4|
+            // | 5 | 6 | 7 | 8 | 9 |   |2,0|2,1|2,2|2,3|2,4|
+            // |   | A | B | C |   |   |3,0|3,1|3,2|3,3|3,4|
+            // |   |   | D |   |   |   |4,0|4,1|4,2|4,3|4,4|
+            //
+            // To go horizontal we need to increase the second value in the 2d array
+            // Increase go right, decrease goes left
+            // To go vertical we need to increase the first valeu in the 2d array
+            // Increase goes down, decrease goes up
+            // 
+            // The keypad uses characters instead of just numbers 
+            char[,] keypad = { 
+                { BLANK, BLANK, '1', BLANK, BLANK },
+                { BLANK, '2', '3', '4', BLANK },
+                { '5', '6', '7', '8', '9' },
+                { BLANK, 'A', 'B', 'C', BLANK },
+                { BLANK, BLANK, 'D', BLANK, BLANK }
+            };
+
+            string keyCode = String.Empty; // Will hold the code to use
+            string[] instructions = Input.Split(','); // Splitting up instructions
+
+            // Starting position number 5 has changed
+            int upDown = 2;
+            int leftRight = 0;
+
+            // Run through the instructions for each number to the door
+            foreach (var instructionLine in instructions)
+            {
+                // This time we need to also check if we hit a blank because that illegal
+                // and the size has changed
+                foreach (var instruction in instructionLine)
+                {
+                    if (instruction == RIGHT && leftRight < 4 && keypad[upDown, leftRight+1] != BLANK)
+                        leftRight++;
+
+                    else if (instruction == LEFT && leftRight > 0 && keypad[upDown, leftRight-1] != BLANK)
+                        leftRight--;
+
+                    else if (instruction == UP && upDown > 0 && keypad[upDown-1, leftRight] != BLANK)
+                        upDown--;
+
+                    else if (instruction == DOWN && upDown < 4 && keypad[upDown+1, leftRight] != BLANK)
+                        upDown++;
+                }
+
+                keyCode += keypad[upDown, leftRight];
+            }
+
+            return keyCode;
         }
     }
 }
