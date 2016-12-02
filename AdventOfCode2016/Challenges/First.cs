@@ -76,7 +76,7 @@ namespace AdventOfCode2016
             int x = 0;
             int y = 0;
 
-            // Memory of were we are going have gone
+            // Memory of were we have gone
             List<string> memory = new List<string>();
             
             // Adding initial position to memory
