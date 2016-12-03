@@ -11,7 +11,9 @@ namespace AdventOfCode2016
     /// </summary>
     public class BaseToCopy : AdventOfCodeChallenge
     {
-        public BaseToCopy() : base (2) { }
+        public BaseToCopy() : base(2)
+        {
+        }
 
         public override string FirstPuzzle()
         {

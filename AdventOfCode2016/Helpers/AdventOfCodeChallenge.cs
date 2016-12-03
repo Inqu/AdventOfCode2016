@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Reflection;
 
 namespace AdventOfCode2016
 {
@@ -23,6 +25,21 @@ namespace AdventOfCode2016
             Day = day;
             FirstCompleted = firstCompleted;
             SecondCompleted = secondCompleted;
+
+            // This is where my input is
+            var inputPath = Path.GetFullPath(String.Format(@"C:\Users\Niels\Source\Repos\AdventOfCode2016\AdventOfCode2016\Input\{0}.txt", Day));
+            FileInfo fNfo = new FileInfo(inputPath); // Creating FileInfo for it
+
+            if (fNfo.Exists) // If file exists
+            {
+                var stream = fNfo.OpenRead(); // Create stream
+                using (TextReader reader = new StreamReader(stream))
+                {
+                    // Set input to the file content
+                    Input = reader.ReadToEnd();
+                }
+            }
+                
         }
 
         public abstract string FirstPuzzle();
