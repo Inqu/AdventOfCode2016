@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2016
 {
-    /// <summary>
-    /// This class is mostly for copying for a new AdventOfCode day
-    /// </summary>
     public class Day4 : AdventOfCodeChallenge
     {
         private const int A_ASCII_VALUE = 97; // lowercase a ascii value
@@ -30,12 +27,12 @@ namespace AdventOfCode2016
             return totalSum.ToString();
         }
 
-        public static int GetSum(string s)
+        public static int GetSum(string inputLine)
         {
             // Regex we use to split up the input like below in parantheses
             // (gbc-frperg-pubpbyngr-znantrzrag)-(377)[(rgbnp)]
             Regex regEx = new Regex("(.*)-(\\d*)\\[(.*)\\]");
-            var match = regEx.Match(s);
+            var match = regEx.Match(inputLine);
 
             // Group 1 now contains the encryptet name
             // E.G. gbc-frperg-pubpbyngr-znantrzrag
@@ -52,7 +49,7 @@ namespace AdventOfCode2016
             encryptetName = encryptetName.Replace("-", "");
 
             // We find the most used letters and sort them
-            var topFiveLetters =
+            var calculatedChecksum =
                 encryptetName.ToCharArray()
                     .OrderBy(c => c) // Order alphabetical
                     .GroupBy(c => c) // Group out duplicates
@@ -62,7 +59,7 @@ namespace AdventOfCode2016
 
             // If the calculated checksum and the checksum match
             // the room is valid and we return the sector id value
-            if (topFiveLetters == checksum)
+            if (calculatedChecksum == checksum)
                 return sectorId;
 
             return 0; // If not valid we return 0
@@ -91,7 +88,7 @@ namespace AdventOfCode2016
                 // We remove the dashes from the encryptet name
                 encryptetName = encryptetName.Replace("-", "");
                 // Container for the decryptet name
-                string decryptetValue = String.Empty;
+                string decryptetName = String.Empty;
 
                 // Run through the chars in encryption name
                 foreach (var character in encryptetName)
@@ -102,22 +99,22 @@ namespace AdventOfCode2016
                     int charsToMove = sectorId % CHARS_IN_APLHABET;
 
                     // Finding the new position of the character
-                    char newCharValue = (char) (characterDecimalValue + charsToMove);
+                    char decryptedCharValue = (char) (characterDecimalValue + charsToMove);
 
                     // If it passes the z character we substract the number of chars in alphabet
                     // E.G. z (122) + 1 = 123 => 123 - 26 = 97 (a)
-                    if ((int) newCharValue > Z_ASCII_VALUE)
-                        newCharValue = (char) (newCharValue - CHARS_IN_APLHABET);
+                    if ((int) decryptedCharValue > Z_ASCII_VALUE)
+                        decryptedCharValue = (char) (decryptedCharValue - CHARS_IN_APLHABET);
 
                     // And add this to our decryptet string
-                    decryptetValue += newCharValue;
+                    decryptetName += decryptedCharValue;
                 }
 
                 // First i thought we were looking for the room named: northpoleobjects
                 // so my if statement was decryptetValue == "northpoleobjects"
                 // this didnt return anything so i did a contains and found a northpoleobjectstorage name
                 // so i changed it to a contains
-                if (decryptetValue.Contains("northpoleobjects"))
+                if (decryptetName.Contains("northpoleobjects"))
                     return sectorId.ToString();
             }
 
