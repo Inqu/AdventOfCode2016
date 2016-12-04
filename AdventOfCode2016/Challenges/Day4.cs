@@ -14,7 +14,7 @@ namespace AdventOfCode2016
     /// </summary>
     public class Day4 : AdventOfCodeChallenge
     {
-        private const int A_ASCII_VALUE = 97; // lowercase z ascii value
+        private const int A_ASCII_VALUE = 97; // lowercase a ascii value
         private const int Z_ASCII_VALUE = 122; // lowercase z ascii value
         // How many chars in alphabet
         private const int CHARS_IN_APLHABET = Z_ASCII_VALUE - A_ASCII_VALUE + 1;
@@ -25,7 +25,7 @@ namespace AdventOfCode2016
         {
             // Split the input by lines
             string[] lines = Input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            int totalSum = lines.Sum(GetSum); // Get total sum for each line
+            int totalSum = lines.Sum(GetSum); // Get total sum for each valid room
 
             return totalSum.ToString();
         }
@@ -38,10 +38,13 @@ namespace AdventOfCode2016
             var match = regEx.Match(s);
 
             // Group 1 now contains the encryptet name
+            // E.G. gbc-frperg-pubpbyngr-znantrzrag
             string encryptetName = match.Groups[1].Value;
             // Group 2 contains the sector id
+            // E.G. 377
             int sectorId = Int32.Parse(match.Groups[2].Value);
             // Group 3 contains the checksum
+            // E.G. rgbnp
             string checksum = match.Groups[3].Value;
 
 
@@ -58,18 +61,20 @@ namespace AdventOfCode2016
                     .Aggregate(String.Empty, (current, topFiveLetter) => current + topFiveLetter.Key); // Make into a new string
 
             // If the calculated checksum and the checksum match
-            // return the sector id value
+            // the room is valid and we return the sector id value
             if (topFiveLetters == checksum)
                 return sectorId;
 
-            return 0; // else return 0
+            return 0; // If not valid we return 0
         }
 
         public override string SecondPuzzle()
         {
+            // Split input by newline
             string[] lines = Input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             
-            foreach (var line in lines)
+            // This time i didnt care about if the room was valid or not
+            foreach (var line in lines) // running through the lines
             {
                 // Regex we use to split up the input like below in parantheses
                 // (gbc-frperg-pubpbyngr-znantrzrag)-(377)[(rgbnp)]
@@ -78,25 +83,29 @@ namespace AdventOfCode2016
                 var match = regEx.Match(line);
 
                 // Group 1 now contains the encryptet name
+                // E.G. gbc-frperg-pubpbyngr-znantrzrag
                 string encryptetName = match.Groups[1].Value;
                 // Group 2 contains the sector id
+                // E.G. 377
                 int sectorId = Int32.Parse(match.Groups[2].Value);
-
                 // We remove the dashes from the encryptet name
                 encryptetName = encryptetName.Replace("-", "");
+                // Container for the decryptet name
                 string decryptetValue = String.Empty;
+
                 // Run through the chars in encryption name
                 foreach (var character in encryptetName)
                 {
                     // We find the decimal value of the character
                     int characterDecimalValue = (int) character;
-                    // Finding out how many chars to move
+                    // Finding out how many chars to move to decrypt it
                     int charsToMove = sectorId % CHARS_IN_APLHABET;
 
                     // Finding the new position of the character
                     char newCharValue = (char) (characterDecimalValue + charsToMove);
 
                     // If it passes the z character we substract the number of chars in alphabet
+                    // E.G. z (122) + 1 = 123 => 123 - 26 = 97 (a)
                     if ((int) newCharValue > Z_ASCII_VALUE)
                         newCharValue = (char) (newCharValue - CHARS_IN_APLHABET);
 
