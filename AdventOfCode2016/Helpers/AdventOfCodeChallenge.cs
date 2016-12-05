@@ -27,7 +27,7 @@ namespace AdventOfCode2016
             SecondCompleted = secondCompleted;
 
             // This is where my input is
-            var inputPath = Path.GetFullPath(String.Format(@"C:\Users\Niels\Source\Repos\AdventOfCode2016\AdventOfCode2016\Input\{0}.txt", Day));
+            var inputPath = Path.GetFullPath(String.Format(@"C:\Users\nis\Documents\visual studio 2017\Projects\AdventOfCode2016\AdventOfCode2016\Input\{0}.txt", Day));
             FileInfo fNfo = new FileInfo(inputPath); // Creating FileInfo for it
 
             if (fNfo.Exists) // If file exists
