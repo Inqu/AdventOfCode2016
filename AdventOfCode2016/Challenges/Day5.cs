@@ -9,7 +9,7 @@ namespace AdventOfCode2016
 {
     public class Day5 : AdventOfCodeChallenge
     {
-        public Day5() : base(5, false, false) { }
+        public Day5() : base(5, true, true) { }
 
         // Takes a bit time to run (bruteforce)
         public override string FirstPuzzle()
@@ -33,6 +33,7 @@ namespace AdventOfCode2016
             return pwd;
         }
 
+        // Takes even more time to run
         public override string SecondPuzzle()
         {
             // Since i need positions pwd is now a char array filled with blank spaces

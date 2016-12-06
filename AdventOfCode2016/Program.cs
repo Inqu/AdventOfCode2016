@@ -11,7 +11,7 @@ namespace AdventOfCode2016
         static void Main(string[] args)
         {
             // List of challenges to run
-            List<AdventOfCodeChallenge> challengesToRun = new List<AdventOfCodeChallenge>() { new Day1(), new Day2(), new Day3(), new Day4(), new Day5() };
+            List<AdventOfCodeChallenge> challengesToRun = new List<AdventOfCodeChallenge>() { new Day1(), new Day2(), new Day3(), new Day4(), /* new Day5() this one is slow*/ new Day6()  };
             
             // Some simple console UI
             Console.Out.WriteLine("---------------------------------------------------");
