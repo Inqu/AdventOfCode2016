@@ -8,7 +8,7 @@ namespace AdventOfCode2016
 {
     public class Day6 : AdventOfCodeChallenge
     {
-        public Day6(): base(6, false, false) { }
+        public Day6(): base(6, true, true) { }
 
         public override string FirstPuzzle()
         {            
@@ -75,11 +75,11 @@ namespace AdventOfCode2016
                         dic[c]++;
                 }
 
-                // We find the most used char in the dictionary
+                // We find the least used char in the dictionary
                 // THe only difference from Puzzle1
-                var mostUsedChar = dic.OrderBy(d => d.Value).First().Key;
+                var leastUsedChar = dic.OrderBy(d => d.Value).First().Key;
                 // And add it to the message
-                message += mostUsedChar;
+                message += leastUsedChar;
             }
 
             return message;
