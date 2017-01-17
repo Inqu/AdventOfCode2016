@@ -13,6 +13,7 @@ namespace AdventOfCode2016
     {
         public BaseToCopy() : base(2)
         {
+            string s = "test";
         }
 
         public override string FirstPuzzle()
